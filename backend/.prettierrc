@@ -1,8 +1,8 @@
 {
-  "trailingComma": "all",
-  "useTabs": true,
-  "semi": true,
-  "bracketSpacing": true,
-  "printWidth": 120,
-  "endOfLine": "auto"
+	"trailingComma": "all",
+	"useTabs": true,
+	"semi": true,
+	"bracketSpacing": true,
+	"printWidth": 120,
+	"endOfLine": "auto"
 }
