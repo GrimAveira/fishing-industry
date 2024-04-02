@@ -1,5 +1,9 @@
 :root {
 	position: relative;
+	background-color: #8898a6;
+}
+#root {
+	height: 100vh;
 }
 * {
 	box-sizing: border-box;
@@ -8,19 +12,10 @@
 	padding: 0;
 	border: none;
 	list-style: none;
-	text-decoration: none;
-	background: none;
 	scroll-behavior: smooth;
-	background-color: #8898a6;
 }
 a {
 	letter-spacing: 0;
 	margin: 0px;
 	padding: 0px;
-}
-p {
-	color: white;
-}
-button {
-	color: white;
 }
