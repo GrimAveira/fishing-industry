@@ -1,4 +1,4 @@
-import { MiddlewareConsumer, Module } from "@nestjs/common";
+import { MiddlewareConsumer, Module, RequestMethod } from "@nestjs/common";
 import { AppController } from "./app.controller";
 import { AppService } from "./app.service";
 import { AuthModule } from "./auth/auth.module";
@@ -6,8 +6,8 @@ import { DB_HOST, DATABASE_NAME, DATABASE_PASSWORD, DATABASE_USER, DATABASE_PORT
 import { PostgresModule } from "nest-postgres";
 import { CryptModule } from "./crypt/crypt.module";
 import { LoggerMiddleware } from "./middleware/isAuth.middleware";
-import { ShiftModule } from './shift/shift.module';
-import { RoleModule } from './role/role.module';
+import { ShiftModule } from "./shift/shift.module";
+import { RoleModule } from "./role/role.module";
 
 @Module({
 	imports: [
@@ -30,6 +30,6 @@ import { RoleModule } from './role/role.module';
 })
 export class AppModule {
 	configure(consumer: MiddlewareConsumer) {
-		consumer.apply(LoggerMiddleware).forRoutes(AuthModule);
+		consumer.apply(LoggerMiddleware).forRoutes({ path: "auth/isAuth", method: RequestMethod.GET });
 	}
 }
