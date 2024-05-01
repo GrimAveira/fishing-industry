@@ -8,8 +8,6 @@
 		align-items: center;
 	}
 	.form {
-		background: rgba(255, 255, 255, 0.5);
-
 		display: flex;
 		flex-direction: column;
 		align-items: center;
@@ -22,6 +20,8 @@
 		margin: 20px;
 
 		color: white;
+
+		background: rgba(255, 255, 255, 0.5);
 	}
 	.textField {
 		margin: 20px;

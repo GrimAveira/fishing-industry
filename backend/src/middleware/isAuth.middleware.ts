@@ -2,22 +2,7 @@ import { Injectable, NestMiddleware } from "@nestjs/common";
 import { Request, Response, NextFunction } from "express";
 import { InjectClient } from "nest-postgres";
 import { Client } from "pg";
-
-function rangeEntering(startTime: string, endTime: string): boolean {
-	const hoursStart = Number(startTime.substring(0, 2));
-	const minutesStart = Number(startTime.substring(3, 5));
-	const hoursEnd = Number(endTime.substring(0, 2));
-	const minutesEnd = Number(endTime.substring(3, 5));
-
-	const changeDay = hoursStart > hoursEnd ? 1 : 0;
-
-	const date = new Date();
-	const startDate = new Date(date.getFullYear(), date.getMonth(), date.getDate(), hoursStart, minutesStart);
-	const endDate = new Date(date.getFullYear(), date.getMonth() + changeDay, date.getDate(), hoursEnd, minutesEnd);
-
-	if (startDate <= date && date <= endDate) return true;
-	return false;
-}
+import { rangeEntering } from "src/utils/functions";
 
 @Injectable()
 export class LoggerMiddleware implements NestMiddleware {
@@ -35,13 +20,15 @@ export class LoggerMiddleware implements NestMiddleware {
 			.catch((error) => {
 				throw error;
 			});
-
-		const shiftID = user.rows[0].shift;
-		const shiftInfo = await this.pg.query(`SELECT * FROM shift WHERE id='${shiftID}'`).catch((error) => {
-			throw error;
-		});
-		if (!rangeEntering(shiftInfo.rows[0].time_start, shiftInfo.rows[0].time_end))
-			return res.status(403).clearCookie("session").send("Ваша смена окончена");
+		const role = user.rows[0].role;
+		if (role !== 1) {
+			const shiftID = user.rows[0].shift;
+			const shiftInfo = await this.pg.query(`SELECT * FROM shift WHERE id='${shiftID}'`).catch((error) => {
+				throw error;
+			});
+			if (!rangeEntering(shiftInfo.rows[0].time_start, shiftInfo.rows[0].time_end))
+				return res.status(403).clearCookie("session").send("Ваша смена окончена");
+		}
 		next();
 	}
 }

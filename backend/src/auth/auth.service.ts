@@ -6,6 +6,7 @@ import { LoginDTO } from "./dto/login.dto";
 import { Request, Response } from "express";
 import { CryptService } from "src/crypt/crypt.service";
 import { randomUUID } from "crypto";
+import { rangeEntering } from "src/utils/functions";
 
 @Injectable()
 export class AuthService {
@@ -39,6 +40,15 @@ export class AuthService {
 				throw error;
 			});
 			if (!user.rowCount) return res.status(400).send("Пользователя с введённым табельным номером не существует");
+			const role = user.rows[0].role;
+			if (role !== 1) {
+				const shiftID = user.rows[0].shift;
+				const shiftInfo = await this.pg.query(`SELECT * FROM shift WHERE id='${shiftID}'`).catch((error) => {
+					throw error;
+				});
+				if (!rangeEntering(shiftInfo.rows[0].time_start, shiftInfo.rows[0].time_end))
+					return res.status(403).clearCookie("session").send("Ваша смена окончена");
+			}
 			const correctPassword = this.cryptService.validate(DTO.password, user.rows[0].password);
 			if (!correctPassword) return res.status(400).send("Введён неверный пароль");
 			const sessionID = randomUUID();
@@ -71,7 +81,6 @@ export class AuthService {
 		try {
 			const sessionID = req.cookies["session"];
 			if (!sessionID) return res.status(401).send("Вы не аутентифицированы");
-
 			const currentSession = await this.pg
 				.query(`SELECT * FROM public.session WHERE hash='${sessionID}'`)
 				.catch((error) => {

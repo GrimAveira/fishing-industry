@@ -1,4 +1,4 @@
-import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import LoginRoute from "./page/login/LoginRoute";
 import RegistrationRoute from "./page/register/RegistrationRoute";
 import { ToastContainer } from "react-toastify";
@@ -9,21 +9,13 @@ import { useState, useEffect } from "react";
 import { promiseFail } from "./functions/toastTrigger";
 import { IAuthInfo } from "./interfaces";
 import UserService from "./api/UserService";
-
-const routerShell = createBrowserRouter([
-	{
-		path: "/login",
-		element: <LoginRoute />,
-	},
-	{
-		path: "/registration",
-		element: <RegistrationRoute />,
-	},
-]);
+import HomeRoute from "./page/home/HomeRoute";
+import CustomError from "./components/custom-error/CustomError";
+import DataRoute from "./page/data/DataRoute";
+import FishRoute from "./page/fish/FishRoute";
 
 const checkIsAuth = async () => {
-	const data = await UserService.isAuth();
-	return data;
+	return await UserService.isAuth();
 };
 
 function App() {
@@ -31,12 +23,43 @@ function App() {
 	const [role, setRole] = useState<TRole>("");
 	const [login, setLogin] = useState<TLogin>("");
 
+	const notAuthRoutes = [
+		{
+			path: "/",
+			element: <HomeRoute />,
+		},
+		{
+			path: "/login",
+			element: <LoginRoute />,
+		},
+		{
+			path: "*",
+			element: <CustomError description="Несуществующий путь" />,
+		},
+	];
+
+	const authRoutes = [
+		{
+			path: "/registration",
+			element:
+				role == "1" ? <RegistrationRoute /> : <CustomError description="Несуществующий путь" />,
+		},
+		{
+			path: "/data",
+			element: <DataRoute />,
+		},
+		{
+			path: "/data/fish",
+			element: <FishRoute />,
+		},
+	];
+
 	const mutationAuth = useMutation({
 		mutationFn: checkIsAuth,
-		onSuccess(response: IAuthInfo) {
+		onSuccess({ login, role }: IAuthInfo) {
 			setIsAuth(true);
-			setRole(response.role);
-			setLogin(response.login);
+			setRole(role);
+			setLogin(login);
 		},
 		onError(message: string) {
 			promiseFail(message);
@@ -48,10 +71,22 @@ function App() {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
+	console.log(isAuth);
+
 	return (
 		<AuthContext.Provider value={{ isAuth, role, login, setIsAuth, setRole, setLogin }}>
-			<RouterProvider router={routerShell} />
-			<ToastContainer />
+			<BrowserRouter basename="/">
+				<Routes>
+					{notAuthRoutes.map(({ path, element }) => {
+						return <Route path={path} element={element} />;
+					})}
+					{isAuth &&
+						authRoutes.map(({ path, element }) => {
+							return <Route path={path} element={element} />;
+						})}
+				</Routes>
+				<ToastContainer />
+			</BrowserRouter>
 		</AuthContext.Provider>
 	);
 }

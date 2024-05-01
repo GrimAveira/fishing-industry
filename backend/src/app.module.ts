@@ -8,6 +8,9 @@ import { CryptModule } from "./crypt/crypt.module";
 import { LoggerMiddleware } from "./middleware/isAuth.middleware";
 import { ShiftModule } from "./shift/shift.module";
 import { RoleModule } from "./role/role.module";
+import { TypeModule } from "./type/type.module";
+import { CategoryModule } from "./category/category.module";
+import { ControllerModule } from "./controller/controller.module";
 
 @Module({
 	imports: [
@@ -24,6 +27,9 @@ import { RoleModule } from "./role/role.module";
 		CryptModule,
 		ShiftModule,
 		RoleModule,
+		TypeModule,
+		CategoryModule,
+		ControllerModule,
 	],
 	controllers: [AppController],
 	providers: [AppService],

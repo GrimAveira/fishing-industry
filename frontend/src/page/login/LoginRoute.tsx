@@ -39,7 +39,7 @@ function LoginRoute() {
 			setIsAuth(true);
 			setRole(response.role);
 			setLogin(response.login);
-			navigate("/login");
+			navigate("/");
 		},
 		onError(message: string) {
 			promiseFail(message);

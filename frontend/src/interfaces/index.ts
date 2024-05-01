@@ -26,3 +26,8 @@ export interface IAuthInfo {
 	login: string;
 	message: string;
 }
+export interface IWeightCatecoryPost {
+	name: string;
+	start: string;
+	finish: string;
+}

@@ -1,0 +1,16 @@
+.exContainer {
+	height: 100%;
+
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+.inContainer {
+	border-radius: 10px;
+
+	color: black;
+	background-color: rgba(255, 255, 255, 0.5);
+	font-size: 20px;
+
+	padding: 30px;
+}

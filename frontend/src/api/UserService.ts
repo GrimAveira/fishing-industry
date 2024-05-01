@@ -20,7 +20,6 @@ export default class UserService {
 			const response = await axios.post(`http://${hostIp}:3000/api/auth/login`, data, {
 				withCredentials: true,
 			});
-			console.log(response);
 			return response.data;
 		} catch (error) {
 			if (axios.isAxiosError(error)) {
