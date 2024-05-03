@@ -1,11 +1,11 @@
 import axios from "axios";
-import { IWeightCategory } from "../interfaces";
+import { IDataFetch } from "../interfaces";
 import { hostIp } from "../constants";
 
-export default class WeightCategoryService {
+export default class TankService {
 	static async getAll() {
 		try {
-			const response = await axios.get<IWeightCategory[]>(`http://${hostIp}:3000/api/category`, {
+			const response = await axios.get<IDataFetch[]>(`http://${hostIp}:3000/api/tank`, {
 				withCredentials: true,
 			});
 			return response.data;
@@ -17,11 +17,11 @@ export default class WeightCategoryService {
 			}
 		}
 	}
-	static async add(category: IWeightCategory) {
+	static async add(tank: string) {
 		try {
 			const response = await axios.post(
-				`http://${hostIp}:3000/api/category`,
-				{ category },
+				`http://${hostIp}:3000/api/tank`,
+				{ tank },
 				{ withCredentials: true },
 			);
 			return response.data;

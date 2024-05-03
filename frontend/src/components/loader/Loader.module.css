@@ -1,0 +1,30 @@
+.container {
+	position: fixed;
+
+	width: 100vw;
+	height: 100vh;
+
+	top: 0%;
+
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+.loader {
+	width: 200px;
+	height: 200px;
+
+	border-radius: 50%;
+	border: 6px dashed #8898a6;
+
+	animation: rotate 12s infinite linear;
+}
+
+@keyframes rotate {
+	from {
+		transform: rotate(0deg);
+	}
+	to {
+		transform: rotate(360deg);
+	}
+}

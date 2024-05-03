@@ -13,6 +13,7 @@ import HomeRoute from "./page/home/HomeRoute";
 import CustomError from "./components/custom-error/CustomError";
 import DataRoute from "./page/data/DataRoute";
 import FishRoute from "./page/fish/FishRoute";
+import TankRoute from "./page/tank/TankRoute";
 
 const checkIsAuth = async () => {
 	return await UserService.isAuth();
@@ -52,6 +53,10 @@ function App() {
 			path: "/data/fish",
 			element: <FishRoute />,
 		},
+		{
+			path: "/data/tank",
+			element: <TankRoute />,
+		},
 	];
 
 	const mutationAuth = useMutation({
@@ -71,18 +76,16 @@ function App() {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
-	console.log(isAuth);
-
 	return (
 		<AuthContext.Provider value={{ isAuth, role, login, setIsAuth, setRole, setLogin }}>
 			<BrowserRouter basename="/">
 				<Routes>
 					{notAuthRoutes.map(({ path, element }) => {
-						return <Route path={path} element={element} />;
+						return <Route key={path} path={path} element={element} />;
 					})}
 					{isAuth &&
 						authRoutes.map(({ path, element }) => {
-							return <Route path={path} element={element} />;
+							return <Route key={path} path={path} element={element} />;
 						})}
 				</Routes>
 				<ToastContainer />

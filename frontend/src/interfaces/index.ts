@@ -26,8 +26,16 @@ export interface IAuthInfo {
 	login: string;
 	message: string;
 }
-export interface IWeightCatecoryPost {
+export interface IWeightCategory {
+	id?: string;
 	name: string;
-	start: string;
-	finish: string;
+	start_range: string;
+	finish_range: string;
+}
+export interface IFish {
+	id?: string;
+	weight: string;
+	category: string;
+	type: string;
+	tank: string;
 }

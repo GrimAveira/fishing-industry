@@ -1,35 +1,16 @@
 import { useState } from "react";
 import styles from "./RegistrationRoute.module.css";
 import { IUserRegData } from "../../interfaces";
-import { InputBase, MenuItem, Select, SelectChangeEvent, TextField } from "@mui/material";
+import { SelectChangeEvent, TextField } from "@mui/material";
 import RoleService from "../../api/RoleService";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import ShiftService from "../../api/ShiftService";
-import { styled } from "@mui/material/styles";
 import { promiseSuccess, promiseFail } from "../../functions/toastTrigger";
 import UserService from "../../api/UserService";
 import MyButton from "../../components/button/MyButton";
-
-const BootstrapInput = styled(InputBase)(({ theme }) => ({
-	"label + &": {
-		marginTop: theme.spacing(3),
-	},
-	"& .MuiInputBase-input": {
-		borderRadius: 4,
-		position: "relative",
-		backgroundColor: theme.palette.background.paper,
-		border: "1px solid #ced4da",
-		transition: theme.transitions.create(["border-color", "box-shadow"]),
-		padding: "16.5px 14px",
-		width: "180px",
-		margin: "10px",
-		"&:focus": {
-			borderRadius: 4,
-			borderColor: "#80bdff",
-			boxShadow: "0 0 0 0.2rem rgba(0,123,255,.25)",
-		},
-	},
-}));
+import CustomError from "../../components/custom-error/CustomError";
+import Loader from "../../components/loader/Loader";
+import SelectMui from "../../components/select-mui/SelectMui";
 
 const createUser = async (userData: IUserRegData) => {
 	return await UserService.registration(userData);
@@ -66,7 +47,7 @@ function RegistrationRoute() {
 		setUserData((prev) => ({ ...prev, [event.target.name]: event.target.value }));
 	};
 
-	const onSubmit = (event: React.ChangeEvent<HTMLFormElement>) => {
+	const submitHandler = (event: React.ChangeEvent<HTMLFormElement>) => {
 		event.preventDefault();
 		mutationUser.mutate(userData);
 	};
@@ -81,8 +62,9 @@ function RegistrationRoute() {
 		},
 	});
 
-	if (isRolesError || isShiftsError) return <div>{isRolesError || isShiftsError}</div>;
-	if (isRolestLoading || isShiftsLoading) return <div>{isRolestLoading || isShiftsLoading}</div>;
+	if (isRolesError || isShiftsError)
+		return <CustomError description={`${isRolesError || isShiftsError}`} />;
+	if (isRolestLoading || isShiftsLoading) return <Loader />;
 
 	const textFields = [
 		{
@@ -164,7 +146,7 @@ function RegistrationRoute() {
 
 	return (
 		<div className={styles.container}>
-			<form className={styles.form} onSubmit={onSubmit}>
+			<form className={styles.form} onSubmit={submitHandler}>
 				{textFields.map((textField) => {
 					return (
 						<TextField
@@ -178,23 +160,14 @@ function RegistrationRoute() {
 				})}
 				{selects.map(({ label, name, value, items }) => {
 					return (
-						<Select
+						<SelectMui
 							key={name}
 							label={label}
 							name={name}
 							value={value}
-							input={<BootstrapInput />}
-							required
+							items={items}
 							onChange={changeSelectHandler}
-						>
-							{items?.map(({ value, label }) => {
-								return (
-									<MenuItem key={value} value={value}>
-										{label}
-									</MenuItem>
-								);
-							})}
-						</Select>
+						/>
 					);
 				})}
 				<MyButton className={styles.button}>Зарегистрировать</MyButton>

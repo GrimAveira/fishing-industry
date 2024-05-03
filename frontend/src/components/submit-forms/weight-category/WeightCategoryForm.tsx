@@ -5,17 +5,17 @@ import { useMutation } from "@tanstack/react-query";
 import { promiseFail, promiseSuccess } from "../../../functions/toastTrigger";
 import styles from "./WeightCategoryForm.module.css";
 import WeightCategoryService from "../../../api/WeightCategoryService";
-import { IWeightCatecoryPost } from "../../../interfaces";
+import { IWeightCategory } from "../../../interfaces";
 
-function addCategory(category: IWeightCatecoryPost) {
+function addCategory(category: IWeightCategory) {
 	return WeightCategoryService.add(category);
 }
 
 function WeightCategoryForm() {
-	const [category, setCategory] = useState<IWeightCatecoryPost>({
+	const [category, setCategory] = useState<IWeightCategory>({
 		name: "Первая категория",
-		start: "1.0",
-		finish: "2.0",
+		start_range: "1.0",
+		finish_range: "2.0",
 	});
 
 	function changeHandler(event: ChangeEvent<HTMLInputElement>) {
@@ -49,20 +49,20 @@ function WeightCategoryForm() {
 		},
 		{
 			label: "Начальное значение диапазона",
-			name: "start",
-			value: category.start,
+			name: "start_range",
+			value: category.start_range,
 			inputProps: {
 				pattern: "^[0-9]{1,5}\\.[0-9]{1,5}$",
-				title: "Запишите в формате: число.число (2,5)",
+				title: "Запишите в формате: число.число (2.5)",
 			},
 		},
 		{
 			label: "Конечное значение диапазона",
-			name: "finish",
-			value: category.finish,
+			name: "finish_range",
+			value: category.finish_range,
 			inputProps: {
 				pattern: "^[0-9]{1,5}\\.[0-9]{1,5}$",
-				title: "Запишите в формате: число.число (2,5)",
+				title: "Запишите в формате: число.число (2.5)",
 			},
 		},
 	];

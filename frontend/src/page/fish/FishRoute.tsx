@@ -5,6 +5,7 @@ import { useState } from "react";
 import MyButton from "../../components/button/MyButton";
 import TypeForm from "../../components/submit-forms/type/TypeForm";
 import WeightCategoryForm from "../../components/submit-forms/weight-category/WeightCategoryForm";
+import FishForm from "../../components/submit-forms/fish/FishForm";
 
 function FishRoute() {
 	const [activeType, setActiveType] = useState(false);
@@ -29,7 +30,9 @@ function FishRoute() {
 			<ModalForm active={activeCategory} setActive={setActiveCategory}>
 				<WeightCategoryForm />
 			</ModalForm>
-			<ModalForm active={activeFish} setActive={setActiveFish}></ModalForm>
+			<ModalForm active={activeFish} setActive={setActiveFish}>
+				<FishForm />
+			</ModalForm>
 		</MainForm>
 	);
 }
