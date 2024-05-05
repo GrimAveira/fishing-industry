@@ -14,9 +14,12 @@ import CustomError from "./components/custom-error/CustomError";
 import DataRoute from "./page/data/DataRoute";
 import FishRoute from "./page/fish/FishRoute";
 import TankRoute from "./page/tank/TankRoute";
-import HistoryRoute from "./page/history/HistoryRoute";
-import FishHistoryRoute from "./page/fish-history/FishHistoryRoute";
-import TankHistoryRoute from "./page/tank-history/TankHistoryRoute";
+import EditHistoryRoute from "./page/edit-history/EditHistoryRoute";
+import EditFishHistoryRoute from "./page/edit-history/EditFishHistoryRoute";
+import EditTankHistoryRoute from "./page/edit-history/EditTankHistoryRoute";
+import ViewHistoryRoute from "./page/view-history/HistoryRoute";
+import FishHistoryForm from "./components/fish-history/FishHistoryForm";
+import TankHistoryForm from "./components/tank-history/TankHistoryForm";
 
 const checkIsAuth = async () => {
 	return await UserService.isAuth();
@@ -62,15 +65,27 @@ function App() {
 		},
 		{
 			path: "/editHistory",
-			element: <HistoryRoute />,
+			element: <EditHistoryRoute />,
 		},
 		{
 			path: "/editHistory/fish",
-			element: <FishHistoryRoute />,
+			element: <EditFishHistoryRoute />,
 		},
 		{
 			path: "/editHistory/tank",
-			element: <TankHistoryRoute />,
+			element: <EditTankHistoryRoute />,
+		},
+		{
+			path: "/history",
+			element: <ViewHistoryRoute />,
+		},
+		{
+			path: "/history/fish",
+			element: <FishHistoryForm />,
+		},
+		{
+			path: "/history/tank",
+			element: <TankHistoryForm />,
 		},
 	];
 

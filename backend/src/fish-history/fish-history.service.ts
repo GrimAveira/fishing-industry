@@ -9,9 +9,20 @@ export class FishHistoryService {
 	async add({ attribute, fishID, user, value }: RecordDTO) {
 		try {
 			const date = new Date();
-			await this.pg.query(
-				`INSERT INTO fish_history ("user", fish, date, attribute, value) VALUES ('${user}', '${fishID}', '${date.toLocaleString("ru")}', '${attribute}', '${value}')`,
+			const prev_value = await this.pg.query(
+				`SELECT value, id FROM fish_history WHERE fish = '${fishID}' and attribute = '${attribute}' ORDER BY id DESC LIMIT 1`,
 			);
+			await this.pg.query(
+				`INSERT INTO fish_history ("user", fish, date, attribute, value, prev_value) VALUES ('${user}', '${fishID}', '${date.toLocaleString("ru")}', '${attribute}', '${value}', '${prev_value.rows[0]?.value || "Новая запись"}')`,
+			);
+		} catch (error) {
+			console.log(error);
+		}
+	}
+	async getView() {
+		try {
+			const view = await this.pg.query(`SELECT * from fish_history_view`);
+			return view.rows;
 		} catch (error) {
 			console.log(error);
 		}

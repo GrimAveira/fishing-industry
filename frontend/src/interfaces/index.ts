@@ -62,3 +62,25 @@ export interface IListProperty {
 	value: string;
 	optimal_value: string;
 }
+export interface IFishHistory {
+	id: string;
+	fish: string;
+	first_name: string;
+	second_name: string;
+	patronymic: string;
+	date: string;
+	attribute: string;
+	value: string;
+	prev_value: string;
+}
+export interface ITankHistory {
+	id: string;
+	tank: string;
+	first_name: string;
+	second_name: string;
+	patronymic: string;
+	date: string;
+	attribute: string;
+	value: string;
+	prev_value: string;
+}

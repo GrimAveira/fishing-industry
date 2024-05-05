@@ -8,6 +8,7 @@ import UserService from "../../api/UserService";
 import MyButton from "../../components/button/MyButton";
 import { AuthContext, TRole } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
+import MainForm from "../../components/main-form/MainForm";
 
 const loginUser = async (userData: IUserLoginData) => {
 	return await UserService.login(userData);
@@ -69,7 +70,7 @@ function LoginRoute() {
 	];
 
 	return (
-		<div className={styles.container}>
+		<MainForm>
 			<form className={styles.form} onSubmit={onSubmit}>
 				{textFields.map((textField) => {
 					return (
@@ -84,7 +85,7 @@ function LoginRoute() {
 				})}
 				<MyButton className={styles.button}>Войти</MyButton>
 			</form>
-		</div>
+		</MainForm>
 	);
 }
 

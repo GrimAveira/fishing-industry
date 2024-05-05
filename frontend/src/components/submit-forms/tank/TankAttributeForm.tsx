@@ -89,7 +89,7 @@ function TankAttributeForm() {
 
 	const selects = [
 		{
-			label: "ID Резервуара",
+			label: "Резервуар",
 			name: "tankID",
 			value: property.tankID,
 			items: tanksFetch
@@ -100,7 +100,7 @@ function TankAttributeForm() {
 				})),
 		},
 		{
-			label: "ID Характеристики",
+			label: "Характеристика",
 			name: "attributeID",
 			value: property.attributeID,
 			items: propertiesFetch

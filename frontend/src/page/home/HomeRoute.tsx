@@ -38,20 +38,17 @@ function HomeRoute() {
 
 	if (!isAuth)
 		return (
-			<div className={styles.containter}>
-				<div className={styles.form}>
-					{" "}
-					<p className={styles.p}>Необходимо войти в систему</p>
-					<CustomLink href={"/login"}>Вход</CustomLink>
-				</div>
-			</div>
+			<MainForm>
+				<p className={styles.p}>Необходимо войти в систему</p>
+				<CustomLink href={"/login"}>Вход</CustomLink>
+			</MainForm>
 		);
 
 	return (
 		<MainForm>
 			<CustomLink href={"/data"}>Добавить новые данные</CustomLink>
 			<CustomLink href={"/editHistory"}>Вести учёт</CustomLink>
-			<CustomLink href={"/viewHistory"}>Посмотреть историю</CustomLink>
+			<CustomLink href={"/history"}>Посмотреть историю</CustomLink>
 			<CustomLink href={"/chart"}>Посмотреть график</CustomLink>
 			{role == "1" && <CustomLink href={"/registration"}>Зарегистрировать</CustomLink>}
 			<MyButton onClick={onExit}>Выйти</MyButton>

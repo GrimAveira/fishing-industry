@@ -46,7 +46,13 @@ export class FishService {
 				await this.fishHistoryService.add({ user, attribute: "Масса", fishID: id, value });
 			} else {
 				await this.pg.query(`UPDATE fish SET category = '${value}' WHERE id = '${id}'`);
-				await this.fishHistoryService.add({ user, attribute: "Весовая категория", fishID: id, value });
+				const categoryName = await this.pg.query(`SELECT name FROM weight_category WHERE id = '${id}'`);
+				await this.fishHistoryService.add({
+					user,
+					attribute: "Весовая категория",
+					fishID: id,
+					value: categoryName.rows[0].name,
+				});
 			}
 		} catch (error) {
 			console.log(error);

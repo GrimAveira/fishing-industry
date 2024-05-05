@@ -39,7 +39,7 @@ function PropertyForm() {
 				value={property}
 				inputProps={{
 					pattern: "[а-яА-Я]{1,20}",
-					title: "Поле может включать только символы кириллицы",
+					title: "Поле может включать от 1 до 20 символов кириллицы и пробелы",
 				}}
 				onChange={changeHandler}
 				required
