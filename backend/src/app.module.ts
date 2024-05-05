@@ -14,7 +14,10 @@ import { ControllerModule } from "./controller/controller.module";
 import { PropertyModule } from "./property/property.module";
 import { TankModule } from "./tank/tank.module";
 import { ListPropertyModule } from "./list-property/list-property.module";
-import { FishModule } from './fish/fish.module';
+import { FishModule } from "./fish/fish.module";
+import { FishHistoryModule } from "./fish-history/fish-history.module";
+import { SessionModule } from "./session/session.module";
+import { TankHistoryModule } from './tank-history/tank-history.module';
 
 @Module({
 	imports: [
@@ -38,6 +41,9 @@ import { FishModule } from './fish/fish.module';
 		TankModule,
 		ListPropertyModule,
 		FishModule,
+		FishHistoryModule,
+		SessionModule,
+		TankHistoryModule,
 	],
 	controllers: [AppController],
 	providers: [AppService],

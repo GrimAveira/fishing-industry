@@ -26,8 +26,12 @@ export class LoggerMiddleware implements NestMiddleware {
 			const shiftInfo = await this.pg.query(`SELECT * FROM shift WHERE id='${shiftID}'`).catch((error) => {
 				throw error;
 			});
-			if (!rangeEntering(shiftInfo.rows[0].time_start, shiftInfo.rows[0].time_end))
+			if (!rangeEntering(shiftInfo.rows[0].time_start, shiftInfo.rows[0].time_end)) {
+				await this.pg.query(`DELETE FROM public.session WHERE hash='${sessionID}'`).catch((error) => {
+					throw error;
+				});
 				return res.status(403).clearCookie("session").send("Ваша смена окончена");
+			}
 		}
 		next();
 	}

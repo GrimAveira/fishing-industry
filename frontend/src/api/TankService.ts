@@ -1,5 +1,5 @@
 import axios from "axios";
-import { IDataFetch } from "../interfaces";
+import { IDataFetch, ITankUpdate } from "../interfaces";
 import { hostIp } from "../constants";
 
 export default class TankService {
@@ -24,6 +24,20 @@ export default class TankService {
 				{ tank },
 				{ withCredentials: true },
 			);
+			return response.data;
+		} catch (error) {
+			if (axios.isAxiosError(error)) {
+				throw error.response?.data;
+			} else if (error instanceof Error) {
+				throw error.message;
+			}
+		}
+	}
+	static async update(payload: ITankUpdate) {
+		try {
+			const response = await axios.patch(`http://${hostIp}:3000/api/list-property`, payload, {
+				withCredentials: true,
+			});
 			return response.data;
 		} catch (error) {
 			if (axios.isAxiosError(error)) {

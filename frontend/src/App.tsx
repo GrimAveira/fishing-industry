@@ -14,6 +14,9 @@ import CustomError from "./components/custom-error/CustomError";
 import DataRoute from "./page/data/DataRoute";
 import FishRoute from "./page/fish/FishRoute";
 import TankRoute from "./page/tank/TankRoute";
+import HistoryRoute from "./page/history/HistoryRoute";
+import FishHistoryRoute from "./page/fish-history/FishHistoryRoute";
+import TankHistoryRoute from "./page/tank-history/TankHistoryRoute";
 
 const checkIsAuth = async () => {
 	return await UserService.isAuth();
@@ -56,6 +59,18 @@ function App() {
 		{
 			path: "/data/tank",
 			element: <TankRoute />,
+		},
+		{
+			path: "/editHistory",
+			element: <HistoryRoute />,
+		},
+		{
+			path: "/editHistory/fish",
+			element: <FishHistoryRoute />,
+		},
+		{
+			path: "/editHistory/tank",
+			element: <TankHistoryRoute />,
 		},
 	];
 

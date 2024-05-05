@@ -29,6 +29,20 @@ export default class UserService {
 			}
 		}
 	}
+	static async logout() {
+		try {
+			const response = await axios.delete(`http://${hostIp}:3000/api/auth/logout`, {
+				withCredentials: true,
+			});
+			return response.data;
+		} catch (error) {
+			if (axios.isAxiosError(error)) {
+				throw error.response?.data;
+			} else if (error instanceof Error) {
+				throw error.message;
+			}
+		}
+	}
 	static async isAuth() {
 		try {
 			const response = await axios.get(`http://${hostIp}:3000/api/auth/isAuth`, {

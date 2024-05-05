@@ -51,15 +51,26 @@ export class AuthService {
 			}
 			const correctPassword = this.cryptService.validate(DTO.password, user.rows[0].password);
 			if (!correctPassword) return res.status(400).send("Введён неверный пароль");
-			const sessionID = randomUUID();
-			await this.pg
-				.query(`INSERT INTO public.session (hash, "user") VALUES ('${sessionID}', '${user.rows[0].login}')`)
+			const currentSession = await this.pg
+				.query(`SELECT * FROM public.session WHERE "user"='${DTO.login}'`)
 				.catch((error) => {
 					throw error;
 				});
+			if (!currentSession.rowCount) {
+				const sessionID = randomUUID();
+				await this.pg
+					.query(`INSERT INTO public.session (hash, "user") VALUES ('${sessionID}', '${user.rows[0].login}')`)
+					.catch((error) => {
+						throw error;
+					});
+				return res
+					.status(200)
+					.cookie("session", sessionID, { httpOnly: true, secure: false })
+					.json({ login: user.rows[0].login, role: `${user.rows[0].role}`, message: "Успешная аутентификация" });
+			}
 			return res
 				.status(200)
-				.cookie("session", sessionID, { httpOnly: true, secure: false })
+				.cookie("session", currentSession.rows[0].hash, { httpOnly: true, secure: false })
 				.json({ login: user.rows[0].login, role: `${user.rows[0].role}`, message: "Успешная аутентификация" });
 		} catch (error) {
 			console.error(error);

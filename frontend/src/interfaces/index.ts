@@ -32,10 +32,33 @@ export interface IWeightCategory {
 	start_range: string;
 	finish_range: string;
 }
-export interface IFish {
-	id?: string;
+export interface IFishFetch {
+	id: string;
 	weight: string;
 	category: string;
 	type: string;
 	tank: string;
+}
+export interface IFishAdd {
+	weight: string;
+	category: string;
+	type: string;
+	tank: string;
+}
+export interface IFishUpdate {
+	id: string;
+	attribute?: string;
+	value: string;
+}
+export interface ITankUpdate {
+	tankID: string;
+	attributeID: string;
+	value: string;
+}
+export interface IListProperty {
+	id: string;
+	tank: string;
+	property: string;
+	value: string;
+	optimal_value: string;
 }

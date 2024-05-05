@@ -3,9 +3,38 @@ import { AuthContext } from "../../context/AuthContext";
 import CustomLink from "../../components/custom-link/CustomLink";
 import MainForm from "../../components/main-form/MainForm";
 import styles from "./HomeRoute.module.css";
+import UserService from "../../api/UserService";
+import { useMutation } from "@tanstack/react-query";
+import { promiseFail, promiseSuccess } from "../../functions/toastTrigger";
+import { useNavigate } from "react-router-dom";
+import MyButton from "../../components/button/MyButton";
+
+async function logout() {
+	return await UserService.logout();
+}
 
 function HomeRoute() {
-	const { role, isAuth } = useContext(AuthContext);
+	const { role, isAuth, setIsAuth, setLogin, setRole } = useContext(AuthContext);
+
+	const navigator = useNavigate();
+
+	const onExit = () => {
+		mutationUser.mutate();
+		setIsAuth(false);
+		setLogin("");
+		setRole("");
+		navigator("/");
+	};
+
+	const mutationUser = useMutation({
+		mutationFn: logout,
+		onSuccess(message: string) {
+			promiseSuccess(message);
+		},
+		onError(message: string) {
+			promiseFail(message);
+		},
+	});
 
 	if (!isAuth)
 		return (
@@ -25,9 +54,7 @@ function HomeRoute() {
 			<CustomLink href={"/viewHistory"}>Посмотреть историю</CustomLink>
 			<CustomLink href={"/chart"}>Посмотреть график</CustomLink>
 			{role == "1" && <CustomLink href={"/registration"}>Зарегистрировать</CustomLink>}
-			<CustomLink onClick={() => console.log("exit")} href={"/"}>
-				Выйти
-			</CustomLink>
+			<MyButton onClick={onExit}>Выйти</MyButton>
 		</MainForm>
 	);
 }

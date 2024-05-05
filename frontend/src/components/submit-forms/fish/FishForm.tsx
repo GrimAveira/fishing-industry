@@ -5,7 +5,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { promiseFail, promiseSuccess } from "../../../functions/toastTrigger";
 import styles from "./FishForm.module.css";
 import TankService from "../../../api/TankService";
-import { IFish } from "../../../interfaces";
+import { IFishAdd } from "../../../interfaces";
 import WeightCategoryService from "../../../api/WeightCategoryService";
 import TypeService from "../../../api/TypeService";
 import CustomError from "../../custom-error/CustomError";
@@ -13,12 +13,12 @@ import Loader from "../../loader/Loader";
 import FishService from "../../../api/FishService";
 import SelectMui from "../../select-mui/SelectMui";
 
-function addFish(fish: IFish) {
+function addFish(fish: IFishAdd) {
 	return FishService.add(fish);
 }
 
 function FishForm() {
-	const [fish, setFish] = useState<IFish>({
+	const [fish, setFish] = useState<IFishAdd>({
 		category: "1",
 		tank: "1",
 		type: "1",
