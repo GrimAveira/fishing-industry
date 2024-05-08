@@ -27,8 +27,11 @@ function FishHistoryForm() {
 		setPage(value);
 	};
 
+	console.log(records);
+
 	useEffect(() => {
-		if (fishHistoryFetch) setRecords(pagination(fishHistoryFetch));
+		if (fishHistoryFetch)
+			setRecords(pagination(fishHistoryFetch.sort((a, b) => Number(a.id) - Number(b.id))));
 	}, [fishHistoryFetch]);
 
 	if (isFishHistoryError) return <CustomError description={`${isFishHistoryError}`} />;

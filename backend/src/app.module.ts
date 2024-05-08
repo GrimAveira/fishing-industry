@@ -17,7 +17,8 @@ import { ListPropertyModule } from "./list-property/list-property.module";
 import { FishModule } from "./fish/fish.module";
 import { FishHistoryModule } from "./fish-history/fish-history.module";
 import { SessionModule } from "./session/session.module";
-import { TankHistoryModule } from './tank-history/tank-history.module';
+import { TankHistoryModule } from "./tank-history/tank-history.module";
+import { UserModule } from './user/user.module';
 
 @Module({
 	imports: [
@@ -44,6 +45,7 @@ import { TankHistoryModule } from './tank-history/tank-history.module';
 		FishHistoryModule,
 		SessionModule,
 		TankHistoryModule,
+		UserModule,
 	],
 	controllers: [AppController],
 	providers: [AppService],
@@ -53,13 +55,16 @@ export class AppModule {
 		consumer
 			.apply(LoggerMiddleware)
 			.forRoutes(
-				{ path: "auth/isAuth", method: RequestMethod.GET },
 				{ path: "type", method: RequestMethod.ALL },
+				{ path: "tank", method: RequestMethod.ALL },
+				{ path: "fish", method: RequestMethod.ALL },
 				{ path: "shift", method: RequestMethod.ALL },
 				{ path: "role", method: RequestMethod.ALL },
 				{ path: "property", method: RequestMethod.ALL },
 				{ path: "list-property", method: RequestMethod.ALL },
 				{ path: "category", method: RequestMethod.ALL },
+				{ path: "tank-history", method: RequestMethod.ALL },
+				{ path: "fish-history", method: RequestMethod.ALL },
 			);
 	}
 }

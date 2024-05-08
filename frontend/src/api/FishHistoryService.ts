@@ -5,7 +5,9 @@ import { hostIp } from "../constants";
 export default class FishHistoryService {
 	static async getAll() {
 		try {
-			const response = await axios.get<IFishHistory[]>(`http://${hostIp}:3000/api/fish-history`);
+			const response = await axios.get<IFishHistory[]>(`http://${hostIp}:3000/api/fish-history`, {
+				withCredentials: true,
+			});
 			return response.data;
 		} catch (error) {
 			if (axios.isAxiosError(error)) {

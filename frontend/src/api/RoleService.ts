@@ -5,7 +5,9 @@ import { hostIp } from "../constants";
 export default class RoleService {
 	static async getAll() {
 		try {
-			const response = await axios.get<IDataFetch[]>(`http://${hostIp}:3000/api/role/all`);
+			const response = await axios.get<IDataFetch[]>(`http://${hostIp}:3000/api/role/all`, {
+				withCredentials: true,
+			});
 			return response.data;
 		} catch (error) {
 			if (axios.isAxiosError(error)) {

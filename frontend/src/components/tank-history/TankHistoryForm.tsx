@@ -28,7 +28,8 @@ function TankHistoryForm() {
 	};
 
 	useEffect(() => {
-		if (tankHistoryFetch) setRecords(pagination(tankHistoryFetch));
+		if (tankHistoryFetch)
+			setRecords(pagination(tankHistoryFetch.sort((a, b) => Number(a.id) - Number(b.id))));
 	}, [tankHistoryFetch]);
 
 	if (isTankHistoryError) return <CustomError description={`${isTankHistoryError}`} />;

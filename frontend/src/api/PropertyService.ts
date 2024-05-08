@@ -1,5 +1,5 @@
 import axios from "axios";
-import { IDataFetch } from "../interfaces";
+import { IDataFetch, IPropertyAdd } from "../interfaces";
 import { hostIp } from "../constants";
 
 export default class PropertyService {
@@ -17,7 +17,7 @@ export default class PropertyService {
 			}
 		}
 	}
-	static async add(property: string) {
+	static async add(property: IPropertyAdd) {
 		try {
 			const response = await axios.post(
 				`http://${hostIp}:3000/api/property`,

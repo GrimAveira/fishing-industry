@@ -6,14 +6,16 @@ import { useMutation } from "@tanstack/react-query";
 import { promiseSuccess, promiseFail } from "../../functions/toastTrigger";
 import UserService from "../../api/UserService";
 import MyButton from "../../components/button/MyButton";
-import { AuthContext, TRole } from "../../context/AuthContext";
+import { AuthContext } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import MainForm from "../../components/main-form/MainForm";
+import { IAuthInfo } from "../../interfaces/index";
 
 const loginUser = async (userData: IUserLoginData) => {
 	return await UserService.login(userData);
 };
-
+//24512 111
+//sgh24 k0d5y3v0
 function LoginRoute() {
 	const [userData, setUserData] = useState<IUserLoginData>({
 		login: "24512",
@@ -22,7 +24,7 @@ function LoginRoute() {
 
 	const navigate = useNavigate();
 
-	const { setIsAuth, setRole, setLogin } = useContext(AuthContext);
+	const { setIsAuth, setRole, setLogin, setIsShift } = useContext(AuthContext);
 
 	const changeInputHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
 		setUserData((prev) => ({ ...prev, [event.target.name]: event.target.value }));
@@ -35,11 +37,12 @@ function LoginRoute() {
 
 	const mutationUser = useMutation({
 		mutationFn: loginUser,
-		onSuccess(response: { login: string; role: TRole; message: string }) {
-			promiseSuccess(response.message);
+		onSuccess({ isShift, login, message, role }: IAuthInfo) {
+			promiseSuccess(message);
 			setIsAuth(true);
-			setRole(response.role);
-			setLogin(response.login);
+			setIsShift(isShift);
+			setRole(role);
+			setLogin(login);
 			navigate("/");
 		},
 		onError(message: string) {

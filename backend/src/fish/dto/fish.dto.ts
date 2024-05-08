@@ -4,4 +4,5 @@ export class FishDTO {
 	category: string;
 	type: string;
 	tank: string;
+	age:string;
 }

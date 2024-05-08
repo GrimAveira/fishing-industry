@@ -1,6 +1,6 @@
 @media screen and (max-width: 800px) {
 	.modal {
-		height: 100vh;
+		min-height: 100vh;
 		width: 100vw;
 
 		background-color: rgba(0, 0, 0, 0.3);

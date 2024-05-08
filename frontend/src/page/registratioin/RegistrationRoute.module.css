@@ -1,0 +1,39 @@
+@media screen and (max-width: 800px) {
+	.container {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+	.form {
+		background: rgba(255, 255, 255, 0.5);
+
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+
+		width: 70%;
+
+		border-radius: 20px;
+
+		padding: 20px;
+		margin: 20px;
+
+		color: white;
+	}
+	.textField {
+		margin: 20px;
+	}
+	.button {
+		font-size: 16px;
+
+		width: 160px;
+		height: 40px;
+
+		margin: 10px;
+	}
+	.back {
+		position: fixed;
+		top: 5px;
+		left: 5px;
+	}
+}

@@ -3,19 +3,19 @@ import { ChangeEvent, useEffect, useState } from "react";
 import MyButton from "../../button/MyButton";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { promiseFail, promiseSuccess } from "../../../functions/toastTrigger";
-import styles from "./FishWeightForm.module.css";
+import styles from "./FishTankForm.module.css";
 import { IFishUpdate } from "../../../interfaces";
 import CustomError from "../../custom-error/CustomError";
 import Loader from "../../loader/Loader";
 import FishService from "../../../api/FishService";
 import SelectMui from "../../select-mui/SelectMui";
-import WeightCategoryService from "../../../api/WeightCategoryService";
+import TankService from "../../../api/TankService";
 
 function updateFish(data: IFishUpdate) {
-	return FishService.update({ ...data, attribute: "Весовая категория" });
+	return FishService.update({ ...data, attribute: "Резервуар" });
 }
 
-function FishCategoryForm() {
+function FishTankForm() {
 	const {
 		isError: isFishError,
 		isLoading: isFishLoading,
@@ -25,19 +25,11 @@ function FishCategoryForm() {
 		queryFn: () => FishService.getAll(),
 	});
 
-	// if (fishFetch) {
-	// 	const currentDate = new Date();
-	// 	const fishDate = new Date(fishFetch[fishFetch.length - 1].create_date);
-	// 	const timeDiff = Math.abs(currentDate.getTime() - fishDate.getTime());
-	// 	const diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
-	// console.log(diffDays + fishFetch[fishFetch.length - 1].age);
-	// }
-
 	const {
-		isError: isCategoryError,
-		isLoading: isCategoryLoading,
-		data: categoriesFetch,
-	} = useQuery({ queryKey: ["categories"], queryFn: () => WeightCategoryService.getAll() });
+		isError: isTanksError,
+		isLoading: isTanksLoading,
+		data: tanksFetch,
+	} = useQuery({ queryKey: ["tanks"], queryFn: () => TankService.getAll() });
 
 	const [fish, setFish] = useState<IFishUpdate>({
 		id: "",
@@ -54,7 +46,7 @@ function FishCategoryForm() {
 				value:
 					fishFetch.find(({ id }) => {
 						return id == fish.id;
-					})?.category || "1",
+					})?.tank || "1",
 			}));
 	}, [fish.id, fishFetch]);
 
@@ -77,9 +69,9 @@ function FishCategoryForm() {
 		},
 	});
 
-	if (isCategoryError || isFishError)
-		return <CustomError description={`${isCategoryError || isFishError}`} />;
-	if (isCategoryLoading || isFishLoading) return <Loader />;
+	if (isTanksError || isFishError)
+		return <CustomError description={`${isTanksError || isFishError}`} />;
+	if (isTanksLoading || isFishLoading) return <Loader />;
 
 	const selects = [
 		{
@@ -94,12 +86,12 @@ function FishCategoryForm() {
 				})),
 		},
 		{
-			label: "Весовая категория",
+			label: "Резервуар",
 			name: "value",
 			value: fish.value,
-			items: categoriesFetch?.map(({ id, name, start_range, finish_range }) => ({
+			items: tanksFetch?.map(({ id, name }) => ({
 				value: id,
-				label: `${name}: от ${start_range}кг до ${finish_range}кг`,
+				label: name,
 			})),
 		},
 	];
@@ -123,4 +115,4 @@ function FishCategoryForm() {
 	);
 }
 
-export default FishCategoryForm;
+export default FishTankForm;

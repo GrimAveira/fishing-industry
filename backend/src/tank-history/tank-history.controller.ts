@@ -7,7 +7,7 @@ export class TankHistoryController {
 	constructor(private readonly tankHistoryService: TankHistoryService) {}
 	@Get()
 	async getAll(@Res() res: Response) {
-		const fish_history = await this.tankHistoryService.getView();
-		return res.status(200).json(fish_history);
+		const tankHistory = await this.tankHistoryService.getView();
+		return res.status(200).json(tankHistory);
 	}
 }

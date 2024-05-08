@@ -5,7 +5,9 @@ import { hostIp } from "../constants";
 export default class RoleService {
 	static async getAll() {
 		try {
-			const response = await axios.get<IFishFetch[]>(`http://${hostIp}:3000/api/fish`);
+			const response = await axios.get<IFishFetch[]>(`http://${hostIp}:3000/api/fish`, {
+				withCredentials: true,
+			});
 			return response.data;
 		} catch (error) {
 			if (axios.isAxiosError(error)) {

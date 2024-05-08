@@ -4,6 +4,7 @@ import { Client } from "pg";
 import { IData } from "src/interface";
 import { ListPropertyService } from "src/list-property/list-property.service";
 import { TankService } from "src/tank/tank.service";
+import PropertyDTO from "./dto/property.dto";
 
 @Injectable()
 export class PropertyService {
@@ -12,13 +13,16 @@ export class PropertyService {
 		@Inject(forwardRef(() => TankService)) private readonly tankService: TankService,
 		@Inject(ListPropertyService) private readonly listPropertyService: ListPropertyService,
 	) {}
-	async add(type: string) {
+	async add({ name, optimal_value }: PropertyDTO) {
 		try {
 			const properties = await this.getAll();
-			const include = properties.map((type) => type.name).includes(type);
+			const include = properties.map((property) => property.name).includes(name);
 			if (!include) {
-				const propertyID = (await this.pg.query(`INSERT INTO tank_property (name) VALUES ('${type}') RETURNING id`))
-					.rows[0].id;
+				const propertyID = (
+					await this.pg.query(
+						`INSERT INTO tank_property (name, optimal_value) VALUES ('${name}', '${optimal_value}') RETURNING id`,
+					)
+				).rows[0].id;
 				const tanks = await this.tankService.getAll();
 				tanks.forEach(async ({ id }) => await this.listPropertyService.add(id, propertyID));
 			}

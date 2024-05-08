@@ -43,11 +43,11 @@ function TankAttributeForm() {
 	});
 
 	useEffect(() => {
-		if (tanksFetch && propertiesFetch) {
-			setProperty((prev) => ({ ...prev, tankID: tanksFetch[0].id }));
-			setProperty((prev) => ({ ...prev, attributeID: propertiesFetch[0].id }));
-		}
-	}, [tanksFetch, propertiesFetch]);
+		if (tanksFetch) setProperty((prev) => ({ ...prev, tankID: tanksFetch[0].id }));
+	}, [tanksFetch]);
+	useEffect(() => {
+		if (propertiesFetch) setProperty((prev) => ({ ...prev, attributeID: propertiesFetch[0].id }));
+	}, [propertiesFetch]);
 	useEffect(() => {
 		if (listPropertiesFetch)
 			setProperty((prev) => ({

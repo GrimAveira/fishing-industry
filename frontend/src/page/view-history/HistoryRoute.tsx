@@ -1,8 +1,8 @@
 import CustomLink from "../../components/custom-link/CustomLink";
-import styles from "./ViewHistoryRoute.module.css";
+import styles from "./HistoryRoute.module.css";
 import MainForm from "../../components/main-form/MainForm";
 
-function ViewHistoryRoute() {
+function HistoryRoute() {
 	return (
 		<MainForm>
 			<CustomLink className={styles.link} href={"history/fish"}>
@@ -15,4 +15,4 @@ function ViewHistoryRoute() {
 	);
 }
 
-export default ViewHistoryRoute;
+export default HistoryRoute;

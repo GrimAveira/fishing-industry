@@ -1,6 +1,6 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import LoginRoute from "./page/login/LoginRoute";
-import RegistrationRoute from "./page/register/RegistrationRoute";
+import RegistrationRoute from "./page/registratioin/RegistrationRoute";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { AuthContext, TLogin, TRole } from "./context/AuthContext";
@@ -20,6 +20,7 @@ import EditTankHistoryRoute from "./page/edit-history/EditTankHistoryRoute";
 import ViewHistoryRoute from "./page/view-history/HistoryRoute";
 import FishHistoryForm from "./components/fish-history/FishHistoryForm";
 import TankHistoryForm from "./components/tank-history/TankHistoryForm";
+import AdminRoute from "./page/admin/AdminRoute";
 
 const checkIsAuth = async () => {
 	return await UserService.isAuth();
@@ -29,6 +30,7 @@ function App() {
 	const [isAuth, setIsAuth] = useState(false);
 	const [role, setRole] = useState<TRole>("");
 	const [login, setLogin] = useState<TLogin>("");
+	const [isShift, setIsShift] = useState(false);
 
 	const notAuthRoutes = [
 		{
@@ -51,6 +53,21 @@ function App() {
 			element:
 				role == "1" ? <RegistrationRoute /> : <CustomError description="Несуществующий путь" />,
 		},
+		{
+			path: "/history",
+			element: <ViewHistoryRoute />,
+		},
+		{
+			path: "/history/fish",
+			element: <FishHistoryForm />,
+		},
+		{
+			path: "/history/tank",
+			element: <TankHistoryForm />,
+		},
+	];
+
+	const authShiftRoutes = [
 		{
 			path: "/data",
 			element: <DataRoute />,
@@ -75,26 +92,25 @@ function App() {
 			path: "/editHistory/tank",
 			element: <EditTankHistoryRoute />,
 		},
+	];
+	const isAdminRoutes = [
 		{
-			path: "/history",
-			element: <ViewHistoryRoute />,
+			path: "/admin",
+			element: <AdminRoute />,
 		},
 		{
-			path: "/history/fish",
-			element: <FishHistoryForm />,
-		},
-		{
-			path: "/history/tank",
-			element: <TankHistoryForm />,
+			path: "/admin/registration",
+			element: <RegistrationRoute />,
 		},
 	];
 
 	const mutationAuth = useMutation({
 		mutationFn: checkIsAuth,
-		onSuccess({ login, role }: IAuthInfo) {
+		onSuccess({ login, role, isShift }: IAuthInfo) {
 			setIsAuth(true);
 			setRole(role);
 			setLogin(login);
+			setIsShift(isShift);
 		},
 		onError(message: string) {
 			promiseFail(message);
@@ -107,7 +123,9 @@ function App() {
 	}, []);
 
 	return (
-		<AuthContext.Provider value={{ isAuth, role, login, setIsAuth, setRole, setLogin }}>
+		<AuthContext.Provider
+			value={{ isShift, isAuth, role, login, setIsAuth, setRole, setLogin, setIsShift }}
+		>
 			<BrowserRouter basename="/">
 				<Routes>
 					{notAuthRoutes.map(({ path, element }) => {
@@ -115,6 +133,15 @@ function App() {
 					})}
 					{isAuth &&
 						authRoutes.map(({ path, element }) => {
+							return <Route key={path} path={path} element={element} />;
+						})}
+					{isAuth &&
+						isShift &&
+						authShiftRoutes.map(({ path, element }) => {
+							return <Route key={path} path={path} element={element} />;
+						})}
+					{role == "1" &&
+						isAdminRoutes.map(({ path, element }) => {
 							return <Route key={path} path={path} element={element} />;
 						})}
 				</Routes>

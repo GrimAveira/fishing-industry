@@ -41,13 +41,14 @@ export class AuthService {
 			});
 			if (!user.rowCount) return res.status(400).send("Пользователя с введённым табельным номером не существует");
 			const role = user.rows[0].role;
+			let isShift = true;
+			if (role == 3) return res.status(401).clearCookie("session").send("Пользователь деактивирован");
 			if (role !== 1) {
 				const shiftID = user.rows[0].shift;
 				const shiftInfo = await this.pg.query(`SELECT * FROM shift WHERE id='${shiftID}'`).catch((error) => {
 					throw error;
 				});
-				if (!rangeEntering(shiftInfo.rows[0].time_start, shiftInfo.rows[0].time_end))
-					return res.status(403).clearCookie("session").send("Ваша смена окончена");
+				if (!rangeEntering(shiftInfo.rows[0].time_start, shiftInfo.rows[0].time_end)) isShift = false;
 			}
 			const correctPassword = this.cryptService.validate(DTO.password, user.rows[0].password);
 			if (!correctPassword) return res.status(400).send("Введён неверный пароль");
@@ -66,12 +67,17 @@ export class AuthService {
 				return res
 					.status(200)
 					.cookie("session", sessionID, { httpOnly: true, secure: false })
-					.json({ login: user.rows[0].login, role: `${user.rows[0].role}`, message: "Успешная аутентификация" });
+					.json({
+						login: user.rows[0].login,
+						role: `${user.rows[0].role}`,
+						message: "Успешная аутентификация",
+						isShift,
+					});
 			}
 			return res
 				.status(200)
 				.cookie("session", currentSession.rows[0].hash, { httpOnly: true, secure: false })
-				.json({ login: user.rows[0].login, role: `${user.rows[0].role}`, message: "Успешная аутентификация" });
+				.json({ login: user.rows[0].login, role: `${user.rows[0].role}`, message: "Успешная аутентификация", isShift });
 		} catch (error) {
 			console.error(error);
 			return res.status(500).send("Непредвиденная ошибка");
@@ -103,9 +109,22 @@ export class AuthService {
 				.catch((error) => {
 					throw error;
 				});
-			return res
-				.status(200)
-				.json({ login: user.rows[0]["user"], role: `${user.rows[0]["role"]}`, message: "Успешная аутентификация" });
+			const role = user.rows[0].role;
+			if (role == 3) return res.status(401).clearCookie("session").send("Пользователь деактивирован");
+			let isShift = true;
+			if (role !== 1) {
+				const shiftID = user.rows[0].shift;
+				const shiftInfo = await this.pg.query(`SELECT * FROM shift WHERE id='${shiftID}'`).catch((error) => {
+					throw error;
+				});
+				if (!rangeEntering(shiftInfo.rows[0].time_start, shiftInfo.rows[0].time_end)) isShift = false;
+			}
+			return res.status(200).json({
+				login: user.rows[0]["user"],
+				role: `${user.rows[0]["role"]}`,
+				message: "Успешная аутентификация",
+				isShift,
+			});
 		} catch (error) {
 			console.log(error);
 			return res.status(500).send("Непредвиденная ошибка");

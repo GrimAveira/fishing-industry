@@ -23,6 +23,7 @@ function FishForm() {
 		tank: "1",
 		type: "1",
 		weight: "1.0",
+		age: "0",
 	});
 
 	const {
@@ -42,7 +43,7 @@ function FishForm() {
 	} = useQuery({ queryKey: ["shifts"], queryFn: () => TypeService.getAll() });
 
 	function changeInputHandler(event: ChangeEvent<HTMLInputElement>) {
-		setFish((prev) => ({ ...prev, weight: event.target.value }));
+		setFish((prev) => ({ ...prev, [event.target.name]: event.target.value }));
 	}
 	const changeSelectHandler = (event: SelectChangeEvent<string>) => {
 		setFish((prev) => ({ ...prev, [event.target.name]: event.target.value }));
@@ -66,6 +67,27 @@ function FishForm() {
 	if (isCategoryError || isTypesError || isTanksError)
 		return <CustomError description={`${isCategoryError || isTypesError || isTanksError}`} />;
 	if (isCategoryLoading || isTypesLoading || isTanksLoading) return <Loader />;
+
+	const inputs = [
+		{
+			label: "Масса в килограммах",
+			name: "weight",
+			value: fish.weight,
+			inputProps: {
+				pattern: "^[0-9]{1,5}\\.[0-9]{1,5}$",
+				title: "Запишите в формате: число.число (2.5)",
+			},
+		},
+		{
+			label: "Возраст в днях",
+			name: "age",
+			value: fish.age,
+			inputProps: {
+				pattern: "^[0-9]{1,3}",
+				title: "Поле включает может включать только от 1 до 3 символов цифр",
+			},
+		},
+	];
 
 	const selects = [
 		{
@@ -99,17 +121,17 @@ function FishForm() {
 
 	return (
 		<form className={styles.form} onSubmit={submitHandler}>
-			<TextField
-				label={"Масса в килограммах"}
-				value={fish.weight}
-				inputProps={{
-					pattern: "^[0-9]{1,5}\\.[0-9]{1,5}$",
-					title: "Запишите в формате: число.число (2.5)",
-				}}
-				onChange={changeInputHandler}
-				required
-				margin="normal"
-			/>
+			{inputs.map((textField) => {
+				return (
+					<TextField
+						{...textField}
+						key={textField.name}
+						onChange={changeInputHandler}
+						required
+						margin="normal"
+					></TextField>
+				);
+			})}
 			{selects.map(({ label, name, value, items }) => {
 				return (
 					<SelectMui

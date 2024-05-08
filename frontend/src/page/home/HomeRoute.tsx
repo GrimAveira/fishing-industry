@@ -14,7 +14,7 @@ async function logout() {
 }
 
 function HomeRoute() {
-	const { role, isAuth, setIsAuth, setLogin, setRole } = useContext(AuthContext);
+	const { role, isAuth, setIsAuth, setLogin, setRole, isShift } = useContext(AuthContext);
 
 	const navigator = useNavigate();
 
@@ -46,11 +46,33 @@ function HomeRoute() {
 
 	return (
 		<MainForm>
-			<CustomLink href={"/data"}>Добавить новые данные</CustomLink>
-			<CustomLink href={"/editHistory"}>Вести учёт</CustomLink>
+			{isShift ? (
+				<>
+					<CustomLink href={"/data"}>Добавить новые данные</CustomLink>
+					<CustomLink href={"/editHistory"}>Вести учёт</CustomLink>
+				</>
+			) : (
+				<>
+					<MyButton
+						onClick={() => {
+							promiseFail("Ваша смена окончена");
+						}}
+					>
+						Добавить новые данные
+					</MyButton>
+					<MyButton
+						onClick={() => {
+							promiseFail("Ваша смена окончена");
+						}}
+					>
+						Вести учёт
+					</MyButton>
+				</>
+			)}
+			{isShift}
 			<CustomLink href={"/history"}>Посмотреть историю</CustomLink>
 			<CustomLink href={"/chart"}>Посмотреть график</CustomLink>
-			{role == "1" && <CustomLink href={"/registration"}>Зарегистрировать</CustomLink>}
+			{role == "1" && <CustomLink href={"/admin"}>Админская панель</CustomLink>}
 			<MyButton onClick={onExit}>Выйти</MyButton>
 		</MainForm>
 	);

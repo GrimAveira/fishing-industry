@@ -27,7 +27,7 @@ const BootstrapInput = styled(InputBase)(({ theme }) => ({
 }));
 
 interface IProps {
-	name: string;
+	name?: string;
 	label: string;
 	onChange: (event: SelectChangeEvent<string>) => void;
 	items:

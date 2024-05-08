@@ -17,6 +17,10 @@ export interface IShiftFetch {
 	time_start: string;
 	time_end: string;
 }
+export interface IShiftAdd {
+	time_start: string;
+	time_end: string;
+}
 export interface IUserLoginData {
 	login: string;
 	password: string;
@@ -25,6 +29,7 @@ export interface IAuthInfo {
 	role: "1" | "2";
 	login: string;
 	message: string;
+	isShift: boolean;
 }
 export interface IWeightCategory {
 	id?: string;
@@ -38,12 +43,15 @@ export interface IFishFetch {
 	category: string;
 	type: string;
 	tank: string;
+	age: string;
+	create_date: string;
 }
 export interface IFishAdd {
 	weight: string;
 	category: string;
 	type: string;
 	tank: string;
+	age: string;
 }
 export interface IFishUpdate {
 	id: string;
@@ -83,4 +91,17 @@ export interface ITankHistory {
 	attribute: string;
 	value: string;
 	prev_value: string;
+}
+export interface IUserFetch {
+	login: string;
+	first_name: string;
+	second_name: string;
+	patronymic: string;
+	password: string;
+	shift: string;
+	role: string;
+}
+export interface IPropertyAdd {
+	name: string;
+	optimal_value: string;
 }

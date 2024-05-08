@@ -15,4 +15,16 @@ export class ShiftService {
 			console.log(error);
 		}
 	}
+	async addShift({ time_end, time_start }: ShiftDTO) {
+		try {
+			const isExists = await this.pg.query(
+				`SELECT * FROM shift WHERE time_start = '${time_start}' and time_end = '${time_end}'`,
+			);
+			if (isExists.rowCount) return true;
+			await this.pg.query(`INSERT INTO shift (time_start, time_end) VALUES ('${time_start}', '${time_end}')`);
+			return false;
+		} catch (error) {
+			console.log(error);
+		}
+	}
 }
