@@ -71,7 +71,6 @@ function HomeRoute() {
 			)}
 			{isShift}
 			<CustomLink href={"/history"}>Посмотреть историю</CustomLink>
-			<CustomLink href={"/chart"}>Посмотреть график</CustomLink>
 			{role == "1" && <CustomLink href={"/admin"}>Админская панель</CustomLink>}
 			<MyButton onClick={onExit}>Выйти</MyButton>
 		</MainForm>

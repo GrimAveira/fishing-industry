@@ -8,7 +8,6 @@ export class PropertyController {
 	constructor(private readonly propertyService: PropertyService) {}
 	@Post()
 	async add(@Res() res: Response, @Body("property") property: PropertyDTO) {
-		console.log(property);
 		const include = await this.propertyService.add(property);
 		if (!include) return res.status(200).send("Характеристика успешно добавлена");
 		return res.status(400).send("Такая характеристика уже существует");

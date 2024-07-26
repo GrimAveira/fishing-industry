@@ -64,7 +64,7 @@ function TankHistoryForm() {
 			)}
 			<Pagination
 				className={styles.pagination}
-				count={Math.floor((tankHistoryFetch?.length || 1) / 6 + 1)}
+				count={Math.ceil((tankHistoryFetch?.length || 1) / 6)}
 				sx={{
 					".MuiPaginationItem-text": {
 						color: "#ffffff !important",

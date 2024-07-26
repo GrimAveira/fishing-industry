@@ -30,8 +30,6 @@ function RmUserForm() {
 		mutationUser.mutate(user);
 	}
 
-	console.log(data);
-
 	const mutationUser = useMutation({
 		mutationFn: patchWeight,
 		onSuccess(message: string) {

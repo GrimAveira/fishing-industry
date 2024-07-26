@@ -15,7 +15,6 @@ export class UserService {
 	}
 	async deactivate(login: string) {
 		try {
-			console.log(login);
 			await this.pg.query(`UPDATE "user" SET role = 3 WHERE login = '${login}'`);
 		} catch (error) {
 			console.log(error);

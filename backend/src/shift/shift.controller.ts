@@ -12,7 +12,6 @@ export class ShiftController {
 	}
 	@Post()
 	async addShift(@Res() res: Response, @Body() shift: ShiftDTO) {
-		console.log(shift);
 		const isExists = await this.shiftService.addShift(shift);
 		if (isExists) return res.status(400).send("Такая смена уже существует");
 		return res.status(200).send("Cмена успешно создана");
